@@ -2,24 +2,15 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "@misaon base",
   "compilerOptions": {
-    "target": "ES2024",
-    "lib": [
-      "ES2024",
-      "ESNext.Array",
-      "ESNext.Collection",
-      "ESNext.Error",
-      "ESNext.Iterator",
-      "ESNext.Promise"
-    ],
+    "target": "ES2025",
+    "lib": ["ES2025"],
     "module": "node20",
     "moduleDetection": "force",
-
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
     "erasableSyntaxOnly": true,
-
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
@@ -31,10 +22,8 @@
     "exactOptionalPropertyTypes": true,
     "allowUnreachableCode": false,
     "forceConsistentCasingInFileNames": true,
-
     "skipLibCheck": true,
     "noEmitOnError": true,
-
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true
