@@ -1,0 +1,16 @@
+packages:
+  - 'packages/*'
+
+# Centralized dependency versions: https://pnpm.io/catalogs
+catalog:
+  eslint: ^10.5.0
+  typescript: ^6.0.3
+  '@types/node': ^24.0.0
+
+# Supply-chain: only install versions public for >= 1 day (our scope exempt).
+minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  - '@misaon/*'
+
+# Dependency build scripts are blocked by default; allowlist vetted ones here.
+allowBuilds: {}

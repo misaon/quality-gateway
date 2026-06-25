@@ -1,0 +1,52 @@
+{
+  "name": "@misaon/eslint-config-react",
+  "version": "0.1.0",
+  "description": "ESLint flat config for React. Extends @misaon/eslint-config-common. Base for @misaon/eslint-config-next.",
+  "keywords": ["eslint", "eslintconfig", "eslint-config", "flat-config", "react"],
+  "license": "MIT",
+  "author": "Ondřej Misák <email@ondrejmisak.cz> (https://ondrejmisak.cz/)",
+  "homepage": "https://github.com/misaon/quality-gateway/tree/main/packages/eslint-config-react#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/misaon/quality-gateway.git",
+    "directory": "packages/eslint-config-react"
+  },
+  "bugs": {
+    "url": "https://github.com/misaon/quality-gateway/issues"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "engines": {
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "peerDependencies": {
+    "eslint": ">=9",
+    "typescript": ">=5"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@misaon/eslint-config-common": "workspace:*"
+  }
+}

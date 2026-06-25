@@ -1,0 +1,31 @@
+{
+  "name": "quality-gateway",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Modern PNPM monorepo of composable quality configs (ESLint & more) + an installable CLI.",
+  "type": "module",
+  "author": "Ondřej Misák <email@ondrejmisak.cz> (https://ondrejmisak.cz/)",
+  "license": "MIT",
+  "packageManager": "pnpm@11.9.0",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=11"
+  },
+  "scripts": {
+    "build": "pnpm --filter \"./packages/*\" run build",
+    "dev": "pnpm --filter \"./packages/*\" --parallel run dev",
+    "typecheck": "pnpm --filter \"./packages/*\" run typecheck",
+    "clean": "pnpm --filter \"./packages/*\" run clean",
+    "lint": "eslint .",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "pnpm build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.31.0",
+    "@misaon/eslint-config-common": "workspace:*",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:"
+  }
+}
