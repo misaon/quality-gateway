@@ -1,0 +1,60 @@
+{
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+
+  // Best-practices bundle: digest-pinned GitHub Actions, weekly lock-file
+  // maintenance, pinned devDependencies, npm minimum-release-age, dependency
+  // dashboard, sensible grouping. Plus: one PR for all non-major updates.
+  extends: ['config:best-practices', 'group:allNonMajor'],
+
+  // --- Conventional Commits: every Renovate commit is `chore(deps): ...` ---
+  // `deps` is an allowed scope (commitlint scope-enum) and `chore` keeps
+  // release-please from cutting a release on dependency bumps.
+  semanticCommits: 'enabled',
+  semanticCommitScope: 'deps',
+
+  // --- Supply-chain cooldown (Renovate-side; complements pnpm minimumReleaseAge) ---
+  minimumReleaseAge: '3 days',
+  internalChecksFilter: 'strict',
+
+  // --- Low noise: weekly batch ---
+  schedule: ['before 4am on monday'],
+  timezone: 'Europe/Prague',
+
+  dependencyDashboard: true,
+  rebaseWhen: 'behind-base-branch',
+
+  packageRules: [
+    // Force `chore` type for ALL deps (overrides config:recommended's
+    // fix-for-runtime-deps), so dependency bumps never trigger a release.
+    {
+      matchPackageNames: ['*'],
+      semanticCommitType: 'chore',
+    },
+    // Advance published caret ranges (^10.5.0 -> ^10.6.0), not just the lockfile.
+    {
+      matchManagers: ['npm'],
+      matchDepTypes: ['dependencies', 'peerDependencies', 'optionalDependencies', 'pnpm.catalog.default'],
+      rangeStrategy: 'bump',
+    },
+    // Group the ESLint / typescript-eslint ecosystem into one PR.
+    {
+      matchManagers: ['npm'],
+      matchPackageNames: [
+        'eslint',
+        'eslint-*',
+        '@eslint/**',
+        '@eslint-community/**',
+        'typescript-eslint',
+        '@typescript-eslint/**',
+        '**/eslint-plugin-**',
+        '**/eslint-config-**',
+      ],
+      groupName: 'eslint ecosystem',
+    },
+    // Group the pnpm catalog (eslint, typescript, @types/node) into one PR.
+    {
+      matchDepTypes: ['pnpm.catalog.default'],
+      groupName: 'pnpm catalog',
+    },
+  ],
+}
