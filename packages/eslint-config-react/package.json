@@ -1,8 +1,14 @@
 {
   "name": "@misaon/eslint-config-react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "ESLint flat config for React. Extends @misaon/eslint-config-common. Base for @misaon/eslint-config-next.",
-  "keywords": ["eslint", "eslintconfig", "eslint-config", "flat-config", "react"],
+  "keywords": [
+    "eslint",
+    "eslintconfig",
+    "eslint-config",
+    "flat-config",
+    "react"
+  ],
   "license": "MIT",
   "author": "Ondřej Misák <email@ondrejmisak.cz> (https://ondrejmisak.cz/)",
   "homepage": "https://github.com/misaon/quality-gateway/tree/main/packages/eslint-config-react#readme",
@@ -24,7 +30,9 @@
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "engines": {
     "node": ">=22"
   },
