@@ -4,6 +4,10 @@ export default {
   rules: {
     // Restrict scopes to our packages + cross-cutting areas.
     // An empty scope is still allowed (repo-wide changes).
-    'scope-enum': [2, 'always', ['common', 'react', 'cli', 'repo', 'deps', 'release']],
+    'scope-enum': [
+      2,
+      'always',
+      ['common', 'react', 'cli', 'repo', 'deps', 'release'],
+    ],
   },
 }

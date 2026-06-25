@@ -8,11 +8,11 @@ our [Code of Conduct](./CODE_OF_CONDUCT.md).
 This is a [pnpm](https://pnpm.io/) workspace monorepo. Each publishable package
 maps to a commit **scope**:
 
-| Package | npm name | Scope |
-| --- | --- | --- |
+| Package                         | npm name                       | Scope    |
+| ------------------------------- | ------------------------------ | -------- |
 | `packages/eslint-config-common` | `@misaon/eslint-config-common` | `common` |
-| `packages/eslint-config-react` | `@misaon/eslint-config-react` | `react` |
-| `packages/cli` | `@misaon/quality-gateway` | `cli` |
+| `packages/eslint-config-react`  | `@misaon/eslint-config-react`  | `react`  |
+| `packages/cli`                  | `@misaon/quality-gateway`      | `cli`    |
 
 ## Development setup
 

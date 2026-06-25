@@ -33,7 +33,12 @@
     // Advance published caret ranges (^10.5.0 -> ^10.6.0), not just the lockfile.
     {
       matchManagers: ['npm'],
-      matchDepTypes: ['dependencies', 'peerDependencies', 'optionalDependencies', 'pnpm.catalog.default'],
+      matchDepTypes: [
+        'dependencies',
+        'peerDependencies',
+        'optionalDependencies',
+        'pnpm.catalog.default',
+      ],
       rangeStrategy: 'bump',
     },
     // Group the ESLint / typescript-eslint ecosystem into one PR.
