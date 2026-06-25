@@ -38,8 +38,10 @@ This project **enforces [Conventional Commits](https://www.conventionalcommits.o
 via commitlint (a local `commit-msg` hook) and CI.
 
 > [!IMPORTANT]
-> PRs are **squash-merged**, so the **PR title** is what lands in history and
-> drives releases. Make the **PR title** a valid Conventional Commit.
+> PRs are **rebase-merged** — every commit lands on `main` as-is and feeds the
+> changelog. So **each commit** must be a valid Conventional Commit. Tidy your
+> branch into atomic, well-described commits (e.g. `git rebase -i`) before
+> requesting review — no `wip` / `fix typo` noise.
 
 **Format:** `<type>(<scope>): <description>`
 
@@ -56,11 +58,13 @@ chore(repo): bump dev dependencies
 ## Pull request workflow
 
 1. Fork and branch off `main`.
-2. Make your change; keep each commit's file changes within the package it affects
-   (release tooling routes changes to a package by the files it touches).
+2. Make your change as one or more **atomic** commits, keeping each commit's
+   file changes within the package it affects (release tooling routes changes to
+   a package by the files it touches).
 3. Ensure `pnpm build`, `pnpm typecheck`, and `pnpm lint` pass.
-4. Open a PR with a **Conventional Commit title** and fill in the template.
-5. After review, a maintainer **squash-merges** it.
+4. Open a PR and fill in the template.
+5. After review, a maintainer **rebase-merges** it, so your commits land linearly
+   on `main` exactly as written.
 
 ## Releases
 
@@ -74,5 +78,5 @@ Releases are automated with [release-please](https://github.com/googleapis/relea
 - When a maintainer merges the release PR, the affected packages are tagged,
   a **GitHub Release** is published, and the packages are published to npm.
 
-That's why a correct PR title matters — it directly determines the next version
-and the changelog entry.
+Because we rebase-merge, **each** commit becomes its own changelog entry — so
+clear, atomic commit messages directly shape the changelog.
