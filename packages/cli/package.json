@@ -1,0 +1,38 @@
+{
+  "name": "@misaon/quality-gateway",
+  "version": "0.1.0",
+  "description": "CLI that detects your stack and wires the matching @misaon quality configs (ESLint & more) into your project.",
+  "keywords": ["eslint", "cli", "monorepo", "quality", "linting", "scaffold"],
+  "license": "MIT",
+  "author": "Ondřej Misák <email@ondrejmisak.cz> (https://ondrejmisak.cz/)",
+  "homepage": "https://github.com/misaon/quality-gateway/tree/main/packages/cli#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/misaon/quality-gateway.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/misaon/quality-gateway/issues"
+  },
+  "type": "module",
+  "bin": {
+    "quality-gateway": "./dist/index.js",
+    "qg": "./dist/index.js"
+  },
+  "files": ["dist"],
+  "engines": {
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:"
+  }
+}

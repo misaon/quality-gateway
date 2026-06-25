@@ -1,0 +1,49 @@
+{
+  "name": "@misaon/eslint-config-common",
+  "version": "0.1.0",
+  "description": "Shared ESLint flat-config base for the @misaon family. Extended by every framework config.",
+  "keywords": ["eslint", "eslintconfig", "eslint-config", "flat-config"],
+  "license": "MIT",
+  "author": "Ondřej Misák <email@ondrejmisak.cz> (https://ondrejmisak.cz/)",
+  "homepage": "https://github.com/misaon/quality-gateway/tree/main/packages/eslint-config-common#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/misaon/quality-gateway.git",
+    "directory": "packages/eslint-config-common"
+  },
+  "bugs": {
+    "url": "https://github.com/misaon/quality-gateway/issues"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "engines": {
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "peerDependencies": {
+    "eslint": ">=9",
+    "typescript": ">=5"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
+  }
+}
