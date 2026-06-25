@@ -8,6 +8,19 @@
   "separate-pull-requests": false,
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": false,
+  "changelog-sections": [
+    { "type": "feat", "section": "✨ Features" },
+    { "type": "fix", "section": "🐛 Bug Fixes" },
+    { "type": "perf", "section": "⚡ Performance Improvements" },
+    { "type": "refactor", "section": "♻️ Refactoring" },
+    { "type": "docs", "section": "📝 Documentation" },
+    { "type": "test", "section": "✅ Tests" },
+    { "type": "build", "section": "📦 Build System" },
+    { "type": "ci", "section": "🤖 Continuous Integration" },
+    { "type": "revert", "section": "⏪ Reverts" },
+    { "type": "style", "section": "💄 Styles", "hidden": true },
+    { "type": "chore", "section": "🧹 Chores", "hidden": true }
+  ],
   "plugins": [{ "type": "node-workspace", "updatePeerDependencies": true }],
   "packages": {
     "packages/eslint-config-common": { "package-name": "@misaon/eslint-config-common" },
