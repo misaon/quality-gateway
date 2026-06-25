@@ -14,5 +14,8 @@ import common from '@misaon/eslint-config-common'
 export default [...common]
 ```
 
-> **Status:** scaffold — the config is currently empty. Rules are added once the
-> underlying tooling is approved and installed.
+## What's included
+
+Currently this base sets **global ignores** for build artifacts — `dist`,
+`coverage`, `node_modules`, caches and minified files. Lint rules are added as
+the underlying tooling (typescript-eslint, plugins) is approved.
