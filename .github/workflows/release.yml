@@ -10,16 +10,14 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # create release commits, tags and GitHub Releases
-      pull-requests: write # open/update the release PR
+      contents: write
+      pull-requests: write
     outputs:
       releases_created: ${{ steps.release.outputs.releases_created }}
       common_released: ${{ steps.release.outputs['packages/eslint-config-common--release_created'] }}
       react_released: ${{ steps.release.outputs['packages/eslint-config-react--release_created'] }}
       cli_released: ${{ steps.release.outputs['packages/cli--release_created'] }}
     steps:
-      # Uses GITHUB_TOKEN. For CI to also run on the release PR, swap to a
-      # fine-grained PAT secret (Contents + Pull requests: read/write).
       - uses: googleapis/release-please-action@v5
         id: release
         with:
@@ -33,32 +31,29 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write # npm provenance
+      id-token: write
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version-file: .node-version
           registry-url: https://registry.npmjs.org
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter "./packages/*" run build
-
       - name: Publish @misaon/eslint-config-common
         if: needs.release-please.outputs.common_released == 'true'
         run: pnpm --filter "@misaon/eslint-config-common" publish --no-git-checks --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
-
       - name: Publish @misaon/eslint-config-react
         if: needs.release-please.outputs.react_released == 'true'
         run: pnpm --filter "@misaon/eslint-config-react" publish --no-git-checks --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
-
       - name: Publish @misaon/quality-gateway
         if: needs.release-please.outputs.cli_released == 'true'
         run: pnpm --filter "@misaon/quality-gateway" publish --no-git-checks --access public
