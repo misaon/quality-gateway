@@ -1,0 +1,13 @@
+* text=auto eol=lf
+
+pnpm-lock.yaml -diff linguist-generated=true
+**/CHANGELOG.md linguist-generated=true
+
+*.svg text
+*.xml text
+
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary
+*.woff2 binary
