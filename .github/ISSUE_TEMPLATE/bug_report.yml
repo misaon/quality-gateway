@@ -1,0 +1,85 @@
+name: Bug Report
+description: Report a bug in @misaon/quality-gateway
+title: "bug: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug report! 🙏
+
+        Before submitting, please [search existing issues](https://github.com/misaon/quality-gateway/issues?q=is%3Aissue)
+        and make sure you're on the latest version.
+
+        For **security vulnerabilities**, do **not** open a public issue —
+        see our [security policy](https://github.com/misaon/quality-gateway/security/policy).
+  - type: dropdown
+    id: package
+    attributes:
+      label: Affected package
+      options:
+        - common (@misaon/eslint-config-common)
+        - react (@misaon/eslint-config-react)
+        - cli (@misaon/quality-gateway)
+        - other / not sure
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of the bug.
+      placeholder: When I run ... I expected ... but instead ...
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Minimal steps (or a minimal reproduction repo / config) so we can reproduce it.
+      placeholder: |
+        1. Configure '...'
+        2. Run '...'
+        3. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: CLI output, stack traces, or ESLint errors. Automatically formatted — no backticks needed.
+      render: shell
+    validations:
+      required: false
+  - type: input
+    id: version
+    attributes:
+      label: Affected package version
+      placeholder: e.g. 0.2.0
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Run `npx envinfo --system --binaries --npmPackages eslint,typescript` and paste the output.
+      render: shell
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues and this is not a duplicate.
+          required: true
+        - label: I am using a currently supported version.
+          required: true
+        - label: I agree to follow this project's [Code of Conduct](https://github.com/misaon/quality-gateway/blob/main/CODE_OF_CONDUCT.md).
+          required: true

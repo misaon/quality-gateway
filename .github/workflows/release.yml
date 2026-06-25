@@ -4,37 +4,64 @@ on:
   push:
     branches: [main]
 
-permissions:
-  contents: read
-
-concurrency:
-  group: release-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
+permissions: {}
 
 jobs:
-  release:
+  release-please:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
-      id-token: write # OIDC — needed to attach npm provenance
+      contents: write # create release commits, tags and GitHub Releases
+      pull-requests: write # open/update the release PR
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
+      common_released: ${{ steps.release.outputs['packages/eslint-config-common--release_created'] }}
+      react_released: ${{ steps.release.outputs['packages/eslint-config-react--release_created'] }}
+      cli_released: ${{ steps.release.outputs['packages/cli--release_created'] }}
+    steps:
+      # Uses GITHUB_TOKEN. For CI to also run on the release PR, swap to a
+      # fine-grained PAT secret (Contents + Pull requests: read/write).
+      - uses: googleapis/release-please-action@v5
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  publish:
+    needs: release-please
+    if: needs.release-please.outputs.releases_created == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # npm provenance
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6
         with:
           node-version: 24
-          cache: pnpm
           registry-url: https://registry.npmjs.org
-      # Ensure a recent npm (provenance support)
-      - run: npm install -g npm@latest
+          cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Create Release PR or publish to npm
-        uses: changesets/action@v1
-        with:
-          version: pnpm version-packages
-          publish: pnpm release
+      - run: pnpm --filter "./packages/*" run build
+
+      - name: Publish @misaon/eslint-config-common
+        if: needs.release-please.outputs.common_released == 'true'
+        run: pnpm --filter "@misaon/eslint-config-common" publish --no-git-checks --access public
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+
+      - name: Publish @misaon/eslint-config-react
+        if: needs.release-please.outputs.react_released == 'true'
+        run: pnpm --filter "@misaon/eslint-config-react" publish --no-git-checks --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+
+      - name: Publish @misaon/quality-gateway
+        if: needs.release-please.outputs.cli_released == 'true'
+        run: pnpm --filter "@misaon/quality-gateway" publish --no-git-checks --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true

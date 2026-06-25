@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "bootstrap-sha": "e8d2e5cd8b7be0a925a1cc5b37659e2c5806b03d",
+  "release-type": "node",
+  "include-component-in-tag": true,
+  "include-v-in-tag": false,
+  "tag-separator": "@",
+  "separate-pull-requests": false,
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": false,
+  "plugins": [{ "type": "node-workspace", "updatePeerDependencies": true }],
+  "packages": {
+    "packages/eslint-config-common": { "package-name": "@misaon/eslint-config-common" },
+    "packages/eslint-config-react": { "package-name": "@misaon/eslint-config-react" },
+    "packages/cli": { "package-name": "@misaon/quality-gateway" }
+  }
+}
