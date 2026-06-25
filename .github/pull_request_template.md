@@ -1,6 +1,7 @@
 <!--
-  ⚠️ This repo SQUASH-MERGES PRs, so the PR TITLE becomes the commit message
-  and drives releases. Your PR title MUST be a valid Conventional Commit:
+  ⚠️ This repo REBASE-MERGES PRs: every commit lands on `main` as-is and feeds
+  the changelog. So EACH COMMIT (not the PR title) must be a valid Conventional
+  Commit. Tidy your branch into atomic commits (e.g. `git rebase -i`) first:
 
       feat(react): add jsx-a11y rule set
       fix(cli): resolve config path on Windows
@@ -19,7 +20,8 @@ Closes #
 
 ## Checklist
 
-- [ ] My PR **title** is a valid [Conventional Commit](https://www.conventionalcommits.org/) (it becomes the squash commit & changelog entry).
+- [ ] **Every commit** is a valid [Conventional Commit](https://www.conventionalcommits.org/) (commits land on `main` via rebase and drive the changelog).
+- [ ] My branch is tidied into atomic commits (no "wip" / "fix typo" noise).
 - [ ] `pnpm build`, `pnpm typecheck`, and `pnpm lint` pass.
 - [ ] I updated docs where relevant.
 - [ ] I read the [contributing guidelines](../blob/main/CONTRIBUTING.md).
