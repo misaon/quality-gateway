@@ -1,0 +1,51 @@
+name: Feature Request
+description: Suggest a new rule, config, or CLI capability
+title: "feat: "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the suggestion! Please describe the problem before the solution so we understand the use case.
+  - type: dropdown
+    id: package
+    attributes:
+      label: Target package
+      options:
+        - common (@misaon/eslint-config-common)
+        - react (@misaon/eslint-config-react)
+        - cli (@misaon/quality-gateway)
+        - new package
+        - other / not sure
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What problem are you trying to solve? What's missing or frustrating today?
+      placeholder: "I'm always frustrated when ..."
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: What would you like to happen? Include example config or CLI usage if relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues and discussions and this is not a duplicate.
+          required: true
+        - label: I agree to follow this project's [Code of Conduct](https://github.com/misaon/quality-gateway/blob/main/CODE_OF_CONDUCT.md).
+          required: true

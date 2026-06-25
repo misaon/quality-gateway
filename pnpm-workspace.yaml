@@ -13,4 +13,5 @@ minimumReleaseAgeExclude:
   - '@misaon/*'
 
 # Dependency build scripts are blocked by default; allowlist vetted ones here.
-allowBuilds: {}
+allowBuilds:
+  lefthook: true # vetted dev tool; its install script sets up the git-hooks binary
