@@ -43,7 +43,8 @@
     "build": "tsc -p tsconfig.json",
     "dev": "tsc -p tsconfig.json --watch",
     "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist *.tsbuildinfo"
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "lint:publish": "publint && attw --pack . --ignore-rules cjs-resolves-to-esm"
   },
   "peerDependencies": {
     "eslint": ">=9",
