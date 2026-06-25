@@ -20,12 +20,14 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "knip": "knip",
+    "lint:publish": "pnpm --filter \"./packages/*\" run lint:publish",
     "test": "vitest run",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
     "prepare": "lefthook install"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
     "@commitlint/cli": "catalog:",
     "@commitlint/config-conventional": "catalog:",
     "@misaon/eslint-config-common": "workspace:*",
@@ -38,6 +40,7 @@
     "knip": "catalog:",
     "lefthook": "catalog:",
     "prettier": "catalog:",
+    "publint": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   }
