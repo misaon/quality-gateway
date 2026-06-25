@@ -8,8 +8,6 @@ permissions:
   contents: read
 
 jobs:
-  # We rebase-merge, so every commit lands on main as-is and feeds the
-  # changelog — each one must be a valid Conventional Commit.
   commits:
     name: Lint commits
     runs-on: ubuntu-latest

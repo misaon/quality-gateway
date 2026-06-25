@@ -1,5 +1,3 @@
-# Git hooks managed by lefthook — https://lefthook.dev
-# Installed automatically via the package.json "prepare" script.
 commit-msg:
   commands:
     commitlint:
