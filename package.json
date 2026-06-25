@@ -17,6 +17,8 @@
     "typecheck": "pnpm --filter \"./packages/*\" run typecheck",
     "clean": "pnpm --filter \"./packages/*\" run clean",
     "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "knip": "knip",
     "prepare": "lefthook install"
   },
@@ -25,9 +27,13 @@
     "@commitlint/config-conventional": "^21.1.0",
     "@misaon/eslint-config-common": "workspace:*",
     "@types/node": "catalog:",
+    "@typescript-eslint/parser": "^8.62.0",
     "eslint": "catalog:",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.6",
     "knip": "^6.19.0",
     "lefthook": "^2.1.9",
+    "prettier": "^3.8.4",
     "typescript": "catalog:"
   }
 }
