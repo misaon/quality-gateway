@@ -45,18 +45,9 @@ jobs:
       - name: Publish @misaon/eslint-config-common
         if: needs.release-please.outputs.common_released == 'true'
         run: pnpm --filter "@misaon/eslint-config-common" publish --no-git-checks --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
       - name: Publish @misaon/eslint-config-react
         if: needs.release-please.outputs.react_released == 'true'
         run: pnpm --filter "@misaon/eslint-config-react" publish --no-git-checks --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
       - name: Publish @misaon/quality-gateway
         if: needs.release-please.outputs.cli_released == 'true'
         run: pnpm --filter "@misaon/quality-gateway" publish --no-git-checks --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
