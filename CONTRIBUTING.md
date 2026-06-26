@@ -49,7 +49,7 @@ via commitlint (a local `commit-msg` hook) and CI.
 - **Scopes:** `common`, `react`, `cli` (omit for repo-wide changes)
 - **Breaking change:** add `!` — e.g. `feat(react)!: drop ESLint 9 support`
 
-```
+```text
 feat(react): add jsx-a11y recommended rules
 fix(cli): resolve config path on Windows
 chore(repo): bump dev dependencies

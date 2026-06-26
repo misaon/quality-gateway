@@ -21,7 +21,7 @@ Instead, report privately via GitHub's built-in private vulnerability reporting:
    of this repository.
 2. Click **"Report a vulnerability"** to open a private security advisory.
 
-Alternatively, email the maintainer at **email@ondrejmisak.cz**.
+Alternatively, email the maintainer at **<email@ondrejmisak.cz>**.
 
 Please include a description and impact, steps to reproduce (a minimal proof of
 concept if possible), and the affected package(s) and version(s).
