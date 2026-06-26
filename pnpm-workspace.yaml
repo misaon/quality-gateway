@@ -14,6 +14,7 @@ catalog:
   eslint-plugin-prettier: ^5.5.6
   knip: ^6.19.0
   lefthook: ^2.1.9
+  markdownlint-cli2: ^0.22.1
   prettier: ^3.8.4
   publint: ^0.3.21
   typescript: ^6.0.3
