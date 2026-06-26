@@ -1,7 +1,6 @@
 import common from '@misaon/eslint-config-common'
-import tsParser from '@typescript-eslint/parser'
 import { defineConfig, globalIgnores } from 'eslint/config'
-import prettierRecommended from 'eslint-plugin-prettier/recommended'
+import tseslint from 'typescript-eslint'
 
 export default defineConfig([
   globalIgnores([
@@ -13,7 +12,6 @@ export default defineConfig([
   common,
   {
     files: ['**/*.{ts,tsx,mts,cts}'],
-    languageOptions: { parser: tsParser },
+    languageOptions: { parser: tseslint.parser },
   },
-  prettierRecommended,
 ])

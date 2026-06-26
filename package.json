@@ -37,18 +37,16 @@
     "@stryker-mutator/core": "catalog:",
     "@stryker-mutator/vitest-runner": "catalog:",
     "@types/node": "catalog:",
-    "@typescript-eslint/parser": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "cspell": "catalog:",
     "eslint": "catalog:",
-    "eslint-config-prettier": "catalog:",
-    "eslint-plugin-prettier": "catalog:",
     "knip": "catalog:",
     "lefthook": "catalog:",
     "markdownlint-cli2": "catalog:",
     "prettier": "catalog:",
     "publint": "catalog:",
     "typescript": "catalog:",
+    "typescript-eslint": "catalog:",
     "vitest": "catalog:"
   }
 }
