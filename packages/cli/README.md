@@ -11,7 +11,7 @@ npx @misaon/quality-gateway init
 pnpm add -D @misaon/quality-gateway
 ```
 
-```
+```text
 quality-gateway <command>
 
 Commands:
