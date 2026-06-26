@@ -18,5 +18,5 @@ Commands:
   init    Detect your stack and set up the matching @misaon ESLint config
 ```
 
-> **Status:** scaffold. `init` currently prints its planned behaviour — the
+> **Status:** scaffold. `init` currently prints its planned behavior — the
 > detection/install/write steps are the next milestone.
