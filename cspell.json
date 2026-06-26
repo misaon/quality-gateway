@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "version": "0.2",
+  "words": [
+    "arethetypeswrong",
+    "commitlint",
+    "knip",
+    "lefthook",
+    "misaon",
+    "Misák",
+    "Ondřej",
+    "publint",
+    "vitest"
+  ],
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/coverage/**",
+    "pnpm-lock.yaml",
+    "**/CHANGELOG.md",
+    "CODE_OF_CONDUCT.md"
+  ]
+}
