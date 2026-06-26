@@ -40,12 +40,14 @@ export async function run(args: string[]): Promise<number> {
   }
 
   switch (command) {
-    case 'init':
+    case 'init': {
       await runInit()
       return 0
-    default:
+    }
+    default: {
       console.error(`Unknown command: ${command}\n`)
       console.log(HELP)
       return 1
+    }
   }
 }
