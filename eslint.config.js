@@ -4,7 +4,12 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 import prettierRecommended from 'eslint-plugin-prettier/recommended'
 
 export default defineConfig([
-  globalIgnores(['**/dist/**', '**/node_modules/**', '**/coverage/**']),
+  globalIgnores([
+    '**/dist/**',
+    '**/node_modules/**',
+    '**/coverage/**',
+    '**/.stryker-tmp/**',
+  ]),
   common,
   {
     files: ['**/*.{ts,tsx,mts,cts}'],

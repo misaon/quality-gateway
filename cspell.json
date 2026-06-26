@@ -16,6 +16,7 @@
     "**/node_modules/**",
     "**/dist/**",
     "**/coverage/**",
+    "**/.stryker-tmp/**",
     "pnpm-lock.yaml",
     "**/CHANGELOG.md",
     "CODE_OF_CONDUCT.md"

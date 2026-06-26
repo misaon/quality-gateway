@@ -1,6 +1,7 @@
 dist
 coverage
 node_modules
+.stryker-tmp
 *.tsbuildinfo
 pnpm-lock.yaml
 **/CHANGELOG.md

@@ -5,5 +5,10 @@
     "MD041": false,
   },
   "globs": ["**/*.md"],
-  "ignores": ["**/node_modules/**", "**/CHANGELOG.md", "CODE_OF_CONDUCT.md"],
+  "ignores": [
+    "**/node_modules/**",
+    "**/.stryker-tmp/**",
+    "**/CHANGELOG.md",
+    "CODE_OF_CONDUCT.md",
+  ],
 }
