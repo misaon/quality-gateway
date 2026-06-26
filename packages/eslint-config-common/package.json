@@ -42,6 +42,9 @@
     "clean": "rm -rf dist *.tsbuildinfo",
     "lint:publish": "publint && attw --pack . --ignore-rules cjs-resolves-to-esm"
   },
+  "dependencies": {
+    "eslint-plugin-unicorn": "catalog:"
+  },
   "peerDependencies": {
     "eslint": ">=9",
     "typescript": ">=5"
