@@ -4,37 +4,34 @@
   "description": "ESLint flat config for React. Extends @misaon/eslint-config-common. Base for @misaon/eslint-config-next.",
   "keywords": [
     "eslint",
-    "eslintconfig",
     "eslint-config",
+    "eslintconfig",
     "flat-config",
     "react"
   ],
+  "homepage": "https://github.com/misaon/quality-gateway/tree/main/packages/eslint-config-react#readme",
+  "bugs": {
+    "url": "https://github.com/misaon/quality-gateway/issues"
+  },
   "license": "MIT",
   "author": "Ondřej Misák <email@ondrejmisak.cz> (https://ondrejmisak.cz/)",
-  "homepage": "https://github.com/misaon/quality-gateway/tree/main/packages/eslint-config-react#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/misaon/quality-gateway.git",
     "directory": "packages/eslint-config-react"
   },
-  "bugs": {
-    "url": "https://github.com/misaon/quality-gateway/issues"
-  },
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     }
-  },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
-  "engines": {
-    "node": ">=22"
   },
   "publishConfig": {
     "access": "public"
@@ -46,6 +43,9 @@
     "clean": "rm -rf dist *.tsbuildinfo",
     "lint:publish": "publint && attw --pack . --ignore-rules cjs-resolves-to-esm"
   },
+  "dependencies": {
+    "@misaon/eslint-config-common": "workspace:*"
+  },
   "peerDependencies": {
     "eslint": ">=9",
     "typescript": ">=5"
@@ -55,7 +55,7 @@
       "optional": true
     }
   },
-  "dependencies": {
-    "@misaon/eslint-config-common": "workspace:*"
+  "engines": {
+    "node": ">=22"
   }
 }

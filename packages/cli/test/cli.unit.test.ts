@@ -31,9 +31,7 @@ describe('run', () => {
     const log = vi.spyOn(console, 'log').mockImplementation(() => {})
     const code = await run(['init'])
     expect(code).toBe(0)
-    expect(log).toHaveBeenCalledWith(
-      'quality-gateway init — not implemented yet.',
-    )
+    expect(log).toHaveBeenCalledWith('quality-gateway init — not implemented yet.')
   })
 
   it('reports an unknown command and returns 1', async () => {
@@ -50,8 +48,6 @@ describe('run', () => {
     const code = await run(['init', '--help'])
     expect(code).toBe(0)
     expect(log.mock.calls[0]?.[0]).toContain('Usage')
-    expect(log).not.toHaveBeenCalledWith(
-      'quality-gateway init — not implemented yet.',
-    )
+    expect(log).not.toHaveBeenCalledWith('quality-gateway init — not implemented yet.')
   })
 })
