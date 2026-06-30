@@ -1,6 +1,6 @@
 {
   "name": "@misaon/quality-gateway",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "CLI that detects your stack and wires the matching @misaon quality configs (ESLint & more) into your project.",
   "keywords": [
     "cli",

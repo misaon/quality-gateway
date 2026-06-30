@@ -1,6 +1,6 @@
 {
   "name": "@misaon/eslint-config-node",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "ESLint flat config for Node.js. Extends @misaon/eslint-config-common with eslint-plugin-n.",
   "keywords": [
     "eslint",
