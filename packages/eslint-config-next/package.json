@@ -1,15 +1,16 @@
 {
-  "name": "@misaon/eslint-config-react",
-  "version": "0.1.2",
-  "description": "ESLint flat config for React. Extends @misaon/eslint-config-common. Base for @misaon/eslint-config-next.",
+  "name": "@misaon/eslint-config-next",
+  "version": "0.1.0",
+  "description": "ESLint flat config for Next.js. Extends @misaon/eslint-config-react with @next/eslint-plugin-next.",
   "keywords": [
     "eslint",
     "eslint-config",
     "eslintconfig",
     "flat-config",
-    "react"
+    "next",
+    "nextjs"
   ],
-  "homepage": "https://github.com/misaon/quality-gateway/tree/main/packages/eslint-config-react#readme",
+  "homepage": "https://github.com/misaon/quality-gateway/tree/main/packages/eslint-config-next#readme",
   "bugs": {
     "url": "https://github.com/misaon/quality-gateway/issues"
   },
@@ -18,7 +19,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/misaon/quality-gateway.git",
-    "directory": "packages/eslint-config-react"
+    "directory": "packages/eslint-config-next"
   },
   "files": [
     "dist"
@@ -44,7 +45,8 @@
     "lint:publish": "publint && attw --pack . --ignore-rules cjs-resolves-to-esm"
   },
   "dependencies": {
-    "@misaon/eslint-config-common": "workspace:*"
+    "@misaon/eslint-config-react": "workspace:*",
+    "@next/eslint-plugin-next": "catalog:"
   },
   "devDependencies": {
     "vitest": "catalog:"

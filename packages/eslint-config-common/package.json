@@ -36,14 +36,24 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "dev": "tsc -p tsconfig.json --watch",
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist *.tsbuildinfo",
     "lint:publish": "publint && attw --pack . --ignore-rules cjs-resolves-to-esm"
   },
   "dependencies": {
-    "eslint-plugin-unicorn": "catalog:"
+    "@eslint/js": "catalog:",
+    "@stylistic/eslint-plugin": "catalog:",
+    "eslint-plugin-case-police": "catalog:",
+    "eslint-plugin-perfectionist": "catalog:",
+    "eslint-plugin-regexp": "catalog:",
+    "eslint-plugin-sonarjs": "catalog:",
+    "eslint-plugin-unicorn": "catalog:",
+    "typescript-eslint": "catalog:"
+  },
+  "devDependencies": {
+    "vitest": "catalog:"
   },
   "peerDependencies": {
     "eslint": ">=9",

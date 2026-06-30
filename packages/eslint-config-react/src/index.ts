@@ -3,8 +3,8 @@ import { defineConfig } from 'eslint/config'
 
 export const react = defineConfig([
   {
-    name: '@misaon/react',
     extends: [common],
+    name: '@misaon/react',
   },
 ])
 
