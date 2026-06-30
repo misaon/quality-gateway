@@ -3,9 +3,9 @@ import path from 'node:path'
 
 import { defineCommand } from 'citty'
 
+import { reportChecks } from '../ui/render.js'
 import { checkTools, detectTsMode, typecheckTools } from './gate.js'
 import { resolveWorkspace } from './resolve-workspace.js'
-import { runAndReport } from './runner.js'
 
 const KNIP_CONFIGS = ['knip.json', 'knip.jsonc', '.knip.json', '.knip.jsonc', 'knip.config.js', 'knip.config.ts', 'knip.config.cjs', 'knip.config.mjs', 'knip.js', 'knip.ts']
 const CSPELL_CONFIGS = ['cspell.json', 'cspell.jsonc', '.cspell.json', '.cspell.jsonc', 'cspell.config.js', 'cspell.config.cjs', 'cspell.config.mjs', 'cspell.config.json', 'cspell.config.jsonc', 'cspell.config.yaml', 'cspell.config.yml', 'cspell.yaml', 'cspell.yml']
@@ -29,7 +29,7 @@ export const check = defineCommand({
     const manifest = readManifest(cwd)
     const tools = checkTools({ hasCspell: hasToolConfig(cwd, manifest, CSPELL_CONFIGS, 'cspell'), hasKnip: hasToolConfig(cwd, manifest, KNIP_CONFIGS, 'knip'), typecheck })
 
-    await runAndReport(tools, cwd, args.json, args.all)
+    await reportChecks(tools, cwd, { json: args.json, listAll: args.all })
   },
 })
 

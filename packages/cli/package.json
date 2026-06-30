@@ -54,19 +54,19 @@
     "lint:publish": "publint"
   },
   "dependencies": {
-    "@clack/prompts": "catalog:",
+    "@inkjs/ui": "catalog:",
     "@misaon/eslint-config-common": "workspace:*",
     "c12": "catalog:",
     "citty": "catalog:",
-    "cli-table3": "catalog:",
-    "cli-truncate": "catalog:",
     "confbox": "catalog:",
-    "consola": "catalog:",
-    "listr2": "catalog:",
+    "ink": "catalog:",
+    "ink-big-text": "catalog:",
+    "ink-gradient": "catalog:",
+    "ink-link": "catalog:",
     "nano-spawn": "catalog:",
     "nypm": "catalog:",
     "pkg-types": "catalog:",
-    "string-width": "catalog:",
+    "react": "catalog:",
     "tinyglobby": "catalog:"
   },
   "devDependencies": {
@@ -74,6 +74,8 @@
     "@misaon/eslint-config-node": "workspace:*",
     "@misaon/eslint-config-react": "workspace:*",
     "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "ink-testing-library": "catalog:",
     "oxfmt": "catalog:",
     "vitest": "catalog:"
   },

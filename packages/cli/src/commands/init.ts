@@ -1,16 +1,33 @@
 import { existsSync } from 'node:fs'
-import { writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
-import { cancel, confirm, intro, isCancel, log, outro, select, spinner } from '@clack/prompts'
 import { defineCommand } from 'citty'
-import { addDevDependency, detectPackageManager } from 'nypm'
-import { readPackageJSON, writePackageJSON } from 'pkg-types'
+import { type PackageJson, readPackageJSON } from 'pkg-types'
 
 import { DEFAULT_LEVEL, isLevel, type Level, LEVELS } from '../config.js'
 import { detectFramework, type EslintLayer, type Framework, FRAMEWORK_CHOICES, isFramework, layerFor } from '../frameworks.js'
+import { promptConfirm, promptSelect } from '../ui/prompt.js'
+import { installDependencies, type ScriptsResult, wireScripts, writeConfigs, type WriteResult } from './apply.js'
 import { resolveWorkspace, type WorkspacePackage } from './resolve-workspace.js'
-import { configFiles, devDependencies, gateScripts } from './scaffold.js'
+import { configFiles, devDependencies, pendingDependencies } from './scaffold.js'
+
+// Sentinel distinct from `undefined` (which is a valid "framework: none") so a user cancel can short-circuit the run.
+const CANCELLED = Symbol('cancelled')
+
+const WRITE_LABEL: Record<WriteResult['status'], string> = {
+  'skipped': '• kept existing',
+  'would-skip': '• would keep existing',
+  'would-write': '• would write',
+  'written': '✔ wrote',
+}
+
+type Choices = { framework: Framework | undefined, level: Level }
+type ApplyOptions = { cwd: string, force: boolean, isDryRun: boolean, isInteractive: boolean, manifest: PackageJson, packages: undefined | WorkspacePackage[], shouldInstall: boolean } & Choices
+type Validation = { error: string } | { framework: Framework | undefined, level: Level | undefined }
+
+function line(message: string): void {
+  process.stdout.write(`${message}\n`)
+}
 
 export const init = defineCommand({
   args: {
@@ -28,58 +45,43 @@ export const init = defineCommand({
   },
   async run({ args }) {
     const cwd = path.resolve(args.dir)
-
-    intro('quality-gateway')
-
     const validation = validateInputs(args.framework, args.level, cwd)
 
     if ('error' in validation) {
-      cancel(validation.error)
+      process.stderr.write(`${validation.error}\n`)
       process.exitCode = 1
 
       return
     }
 
-    const { framework: frameworkFlag, level: levelFlag } = validation
     const manifest = await readPackageJSON(cwd)
     const packages = resolveWorkspace(cwd)
+    // Prompt only on a real TTY; --yes (or a piped run) takes the detected/default answers.
+    const isInteractive = !args.yes && process.stdout.isTTY
 
-    let framework: Framework | undefined
+    line(`quality-gateway · wiring ${cwd}`)
 
-    if (packages === undefined) {
-      framework = await resolveFramework(frameworkFlag, detectFramework(manifest), args.yes)
+    const choices = await resolveChoices(validation, manifest, packages, isInteractive)
 
-      if (framework === undefined) {
-        return
-      }
-    } else {
-      log.info(`Monorepo detected — ${String(packages.length)} packages. ESLint auto-detects each package's framework, so there is nothing to pick.`)
-    }
+    if (choices === CANCELLED) {
+      line('Cancelled.')
 
-    const level = await resolveLevel(levelFlag, args.yes)
-
-    if (level === undefined) {
       return
     }
 
-    log.info(`Wiring into ${cwd} — ${describeScope(packages, framework)}, level: ${level}`)
-
-    const usedLayers = packages === undefined ? [layerFor(framework ?? 'none')] : [...new Set<EslintLayer>([...packages.map(workspacePackage => workspacePackage.layer), 'node'])]
+    line(`Wiring — ${describeScope(packages, choices.framework)}, level: ${choices.level}`)
 
     try {
-      await writeConfigFiles(cwd, configFiles(framework, level), args.force, args.dryRun)
-      await addScripts(cwd, manifest, args.dryRun, args.force)
-      await installPackages({ cwd, dependencies: devDependencies(level, usedLayers), isDryRun: args.dryRun, isMonorepo: packages !== undefined, manifest, shouldInstall: args.install, shouldSkipPrompts: args.yes })
-
-      outro('Ready — run your `check` script to try it.')
+      await applyConfig({ cwd, force: args.force, isDryRun: args.dryRun, isInteractive, manifest, packages, shouldInstall: args.install, ...choices })
+      line('✔ Ready — run your `check` script to try it.')
     } catch (error) {
-      log.error(String(error))
+      process.stderr.write(`✖ ${String(error)}\n`)
       process.exitCode = 1
     }
   },
 })
 
-function validateInputs(frameworkFlag: string | undefined, levelFlag: string | undefined, cwd: string): { error: string } | { framework: Framework | undefined, level: Level | undefined } {
+function validateInputs(frameworkFlag: string | undefined, levelFlag: string | undefined, cwd: string): Validation {
   if (frameworkFlag !== undefined && !isFramework(frameworkFlag)) {
     return { error: `Invalid --framework "${frameworkFlag}". Choose one of: ${FRAMEWORK_CHOICES.join(', ')}.` }
   }
@@ -96,163 +98,116 @@ function validateInputs(frameworkFlag: string | undefined, levelFlag: string | u
   return { framework: frameworkFlag, level: levelFlag }
 }
 
-function describeScope(packages: undefined | WorkspacePackage[], framework: Framework | undefined): string {
-  return packages === undefined ? `framework: ${framework ?? 'none'}` : `monorepo: ${String(packages.length)} packages`
-}
+/** Collect the framework + level, prompting only where a TTY and no flag already settled it. */
+async function resolveChoices(validation: { framework: Framework | undefined, level: Level | undefined }, manifest: PackageJson, packages: undefined | WorkspacePackage[], isInteractive: boolean): Promise<Choices | typeof CANCELLED> {
+  let framework: Framework | undefined
 
-function isFileExistsError(error: unknown): boolean {
-  return typeof error === 'object' && error !== null && 'code' in error && error.code === 'EEXIST'
-}
+  if (packages === undefined) {
+    const picked = await resolveFramework(validation.framework, manifest, isInteractive)
 
-async function writeConfigFiles(cwd: string, files: ReturnType<typeof configFiles>, shouldOverwrite: boolean, isDryRun: boolean) {
-  for (const file of files) {
-    const target = path.join(cwd, file.path)
-
-    if (isDryRun) {
-      // A dry run only previews; this existsSync never precedes a write, so there is no race.
-      log.info(!shouldOverwrite && existsSync(target) ? `${file.path} exists — would skip (use --force to overwrite)` : `would write ${file.path}`)
-
-      continue
+    if (picked === CANCELLED) {
+      return CANCELLED
     }
 
-    // 'wx' makes "create only if absent" a single atomic step — no existsSync-then-writeFile race (js/file-system-race).
-    const writeOptions = shouldOverwrite ? undefined : { flag: 'wx' }
-
-    try {
-      await writeFile(target, file.content, writeOptions)
-    } catch (error) {
-      if (!shouldOverwrite && isFileExistsError(error)) {
-        log.warn(`${file.path} exists — skipping (use --force to overwrite)`)
-
-        continue
-      }
-
-      throw error
-    }
-
-    log.success(`wrote ${file.path}`)
+    framework = picked
+  } else {
+    line(`Monorepo detected (${String(packages.length)} packages) — ESLint auto-detects each package's framework.`)
   }
+
+  const level = await resolveLevel(validation.level, isInteractive)
+
+  return level === CANCELLED ? CANCELLED : { framework, level }
 }
 
-async function addScripts(cwd: string, manifest: Awaited<ReturnType<typeof readPackageJSON>>, isDryRun: boolean, shouldOverwrite: boolean) {
-  const scripts = gateScripts()
-  const existing = Object.keys(scripts).filter(name => manifest.scripts?.[name] !== undefined)
+async function resolveFramework(flag: Framework | undefined, manifest: PackageJson, isInteractive: boolean): Promise<Framework | typeof CANCELLED | undefined> {
+  if (flag !== undefined) {
+    return flag
+  }
 
-  if (isDryRun) {
-    log.info(`would add scripts: ${Object.keys(scripts).join(', ')}`)
+  if (!isInteractive) {
+    return detectFramework(manifest)
+  }
+
+  return await promptSelect<Framework>('Framework?', FRAMEWORK_CHOICES.map(name => ({ label: name, value: name })), detectFramework(manifest)) ?? CANCELLED
+}
+
+async function resolveLevel(flag: Level | undefined, isInteractive: boolean): Promise<Level | typeof CANCELLED> {
+  if (flag !== undefined) {
+    return flag
+  }
+
+  if (!isInteractive) {
+    return DEFAULT_LEVEL
+  }
+
+  return await promptSelect<Level>('Rule level?', LEVELS.map(name => ({ label: name === 'hardcore' ? `${name} — adds spell-check (cspell)` : name, value: name })), DEFAULT_LEVEL) ?? CANCELLED
+}
+
+function describeScope(packages: undefined | WorkspacePackage[], framework: Framework | undefined): string {
+  return packages === undefined ? `framework: ${framework ?? 'none'}` : 'monorepo'
+}
+
+/** Write the configs, wire the scripts, and install the missing devDependencies — reporting each step. */
+async function applyConfig({ cwd, force, framework, isDryRun, isInteractive, level, manifest, packages, shouldInstall }: ApplyOptions): Promise<void> {
+  const usedLayers = packages === undefined
+    ? [layerFor(framework ?? 'none')]
+    : [...new Set<EslintLayer>([...packages.map(workspacePackage => workspacePackage.layer), 'node'])]
+
+  const writes = await writeConfigs(cwd, configFiles(framework, level), { dryRun: isDryRun, force })
+
+  for (const result of writes) {
+    line(`${WRITE_LABEL[result.status]} ${result.path}`)
+  }
+
+  reportScripts(await wireScripts(cwd, manifest, { dryRun: isDryRun, force }))
+
+  await handleInstall({ cwd, dependencies: devDependencies(level, usedLayers), isDryRun, isInteractive, isMonorepo: packages !== undefined, manifest, shouldInstall })
+}
+
+function reportScripts(result: ScriptsResult): void {
+  if (result.status === 'previewed') {
+    line(`• would add scripts: ${result.added.join(', ')}`)
 
     return
   }
 
-  if (existing.length > 0 && !shouldOverwrite) {
-    log.warn(`kept your existing ${existing.join(', ')} script(s) — pass --force to replace`)
+  if (result.added.length > 0) {
+    line(`✔ wired ${result.added.join(', ')} script(s)`)
   }
 
-  manifest.scripts ??= {}
-
-  for (const [name, command] of Object.entries(scripts)) {
-    if (shouldOverwrite || !existing.includes(name)) {
-      manifest.scripts[name] = command
-    }
+  if (result.kept.length > 0) {
+    line(`• kept your ${result.kept.join(', ')} script(s) — pass --force to replace`)
   }
-
-  await writePackageJSON(path.join(cwd, 'package.json'), manifest)
-  log.success('wired check/fix scripts')
 }
 
-async function installPackages({ cwd, dependencies, isDryRun, isMonorepo, manifest, shouldInstall, shouldSkipPrompts }: { cwd: string, dependencies: string[], isDryRun: boolean, isMonorepo: boolean, manifest: Awaited<ReturnType<typeof readPackageJSON>>, shouldInstall: boolean, shouldSkipPrompts: boolean }): Promise<void> {
-  const present = new Set(Object.keys({ ...manifest.dependencies, ...manifest.devDependencies }))
-  const missing = dependencies.filter(dependency => !present.has(dependency))
+async function handleInstall({ cwd, dependencies, isDryRun, isInteractive, isMonorepo, manifest, shouldInstall }: { cwd: string, dependencies: string[], isDryRun: boolean, isInteractive: boolean, isMonorepo: boolean, manifest: PackageJson, shouldInstall: boolean }): Promise<void> {
+  const missing = pendingDependencies(dependencies, manifest)
 
   if (missing.length === 0) {
-    log.info('All devDependencies already present — nothing to install.')
+    line('• all devDependencies already present')
 
     return
   }
 
   if (!shouldInstall) {
-    log.info(`install these devDependencies: ${missing.join(' ')}`)
+    line(`• install these devDependencies: ${missing.join(' ')}`)
 
     return
   }
 
   if (isDryRun) {
-    log.info(`would install: ${missing.join(' ')}`)
+    line(`• would install: ${missing.join(' ')}`)
 
     return
   }
 
-  if (!shouldSkipPrompts) {
-    const confirmed = await confirm({ message: `Install devDependencies: ${missing.join(', ')}?` })
+  if (isInteractive && !(await promptConfirm(`Install ${String(missing.length)} devDependencies now?`))) {
+    line(`• skipped — install later: ${missing.join(' ')}`)
 
-    if (isCancel(confirmed) || !confirmed) {
-      return
-    }
+    return
   }
 
-  // npm maps `workspace: true` to --workspaces (installs into every package); only pnpm/yarn need it to target the monorepo root.
-  const pm = await detectPackageManager(cwd)
-  const isWorkspaceRoot = isMonorepo && pm?.name !== 'npm'
-  const progress = spinner()
-
-  progress.start('Installing devDependencies')
-
-  try {
-    await addDevDependency(missing, { cwd, workspace: isWorkspaceRoot })
-    progress.stop('Installed devDependencies')
-  } catch (error) {
-    progress.stop('Could not install devDependencies')
-
-    throw error
-  }
-}
-
-async function resolveFramework(flag: Framework | undefined, detected: Framework, shouldSkipPrompts: boolean): Promise<Framework | undefined> {
-  if (flag !== undefined) {
-    return flag
-  }
-
-  if (shouldSkipPrompts) {
-    return detected
-  }
-
-  const choice = await select({
-    initialValue: detected,
-    message: 'Framework?',
-    options: FRAMEWORK_CHOICES.map(name => ({ label: name, value: name })),
-  })
-
-  if (isCancel(choice)) {
-    cancel('Cancelled.')
-
-    return undefined
-  }
-
-  return choice
-}
-
-async function resolveLevel(flag: Level | undefined, shouldSkipPrompts: boolean): Promise<Level | undefined> {
-  if (flag !== undefined) {
-    return flag
-  }
-
-  if (shouldSkipPrompts) {
-    return DEFAULT_LEVEL
-  }
-
-  const choice = await select<Level>({
-    initialValue: DEFAULT_LEVEL,
-    message: 'Rule level?',
-    options: LEVELS.map(name => name === 'hardcore'
-      ? { hint: 'strict + spell-check (cspell)', label: name, value: name }
-      : { label: name, value: name }),
-  })
-
-  if (isCancel(choice)) {
-    cancel('Cancelled.')
-
-    return undefined
-  }
-
-  return choice
+  line('Installing devDependencies…')
+  await installDependencies(cwd, missing, { isMonorepo })
+  line(`✔ installed ${String(missing.length)} devDependencies`)
 }
