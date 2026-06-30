@@ -1,6 +1,4 @@
-import { colors } from 'consola/utils'
-
-import { type GateReport, SYNTHETIC_RULE, type ToolReport } from './report.js'
+import { type GateReport, SYNTHETIC_RULE } from './report.js'
 
 export type DetailRow = { column: number, file: string, line: number, message: string, rule: string, tool: string }
 
@@ -22,25 +20,6 @@ export function formatDuration(ms: number): string {
   }
 
   return `${String(Math.floor(seconds / 60))}m ${String(Math.round(seconds % 60))}s`
-}
-
-/** The live listr2 task title — leads with the tool name (bold issue count); distinguishes a missing binary from a crash. */
-export function titleFor(tool: ToolReport): string {
-  if (tool.status === 'passed') {
-    return tool.name
-  }
-
-  if (tool.status === 'not-installed') {
-    return `${tool.name} — not installed`
-  }
-
-  if (tool.status === 'errored') {
-    return `${tool.name} — could not run`
-  }
-
-  const count = tool.issues.length
-
-  return `${tool.name} — ${colors.bold(formatCount(count))} ${count === 1 ? 'issue' : 'issues'}`
 }
 
 /** Every issue across all tools, sorted by file → line → column (then tool, then rule for stable ties); grouped by file at render time, each row showing the position, message, tool, and rule. */

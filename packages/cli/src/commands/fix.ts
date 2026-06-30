@@ -2,8 +2,8 @@ import path from 'node:path'
 
 import { defineCommand } from 'citty'
 
+import { reportChecks } from '../ui/render.js'
 import { fixTools } from './gate.js'
-import { runAndReport } from './runner.js'
 
 export const fix = defineCommand({
   args: {
@@ -14,6 +14,6 @@ export const fix = defineCommand({
     name: 'fix',
   },
   async run({ args }) {
-    await runAndReport(fixTools(), path.resolve(args.dir), false)
+    await reportChecks(fixTools(), path.resolve(args.dir))
   },
 })

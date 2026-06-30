@@ -36,6 +36,8 @@
     "@vitest/coverage-v8": "catalog:",
     "cspell": "catalog:",
     "eslint": "catalog:",
+    "eslint-plugin-n": "catalog:",
+    "eslint-plugin-react-hooks": "catalog:",
     "knip": "catalog:",
     "lefthook": "catalog:",
     "markdownlint-cli2": "catalog:",

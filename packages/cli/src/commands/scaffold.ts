@@ -3,9 +3,18 @@ import { GATE_TOOLS } from './gate.js'
 import type { Level } from '../config.js'
 import type { EslintLayer, Framework } from '../frameworks.js'
 
-type ScaffoldFile = {
+export type ScaffoldFile = {
   content: string
   path: string
+}
+
+type Manifest = { dependencies?: Record<string, string>, devDependencies?: Record<string, string> }
+
+/** The subset of `dependencies` not already declared (as a dep or devDep) in the manifest. */
+export function pendingDependencies(dependencies: string[], manifest: Manifest): string[] {
+  const present = new Set(Object.keys({ ...manifest.dependencies, ...manifest.devDependencies }))
+
+  return dependencies.filter(dependency => !present.has(dependency))
 }
 
 const ESLINT_CONFIG = `import { eslint } from '@misaon/quality-gateway/eslint'\n\nexport default eslint()\n`

@@ -3,40 +3,43 @@ packages:
 
 catalog:
   '@arethetypeswrong/cli': ^0.18.4
-  '@clack/prompts': ^1.6.0
   '@commitlint/cli': ^21.1.0
   '@commitlint/config-conventional': ^21.1.0
   '@eslint/js': ^10.0.1
+  '@inkjs/ui': 2.0.0
   '@next/eslint-plugin-next': ^16.2.0
   '@stryker-mutator/core': ^9.6.1
   '@stryker-mutator/vitest-runner': ^9.6.1
   '@stylistic/eslint-plugin': ^6.0.0-beta.5
   '@types/node': ^24.0.0
+  '@types/react': ^19.2.0
   '@vitest/coverage-v8': ^5.0.0-beta.5
   c12: ^3.3.4
   citty: ^0.2.2
-  cli-table3: ^0.6.5
-  cli-truncate: ^6.0.0
   confbox: ^0.2.4
-  consola: ^3.4.2
   cspell: ^10.0.1
   eslint: ^10.5.0
   eslint-plugin-case-police: ^2.2.1
   eslint-plugin-n: ^18.2.1
   eslint-plugin-perfectionist: ^5.9.1
+  eslint-plugin-react-hooks: ^7.1.1
   eslint-plugin-regexp: ^3.1.1
   eslint-plugin-sonarjs: ^4.1.0
   eslint-plugin-unicorn: ^69.0.0
+  ink: ^7.1.0
+  ink-big-text: ^2.0.0
+  ink-gradient: ^4.0.1
+  ink-link: ^5.0.0
+  ink-testing-library: ^4.0.0
   knip: ^6.19.0
   lefthook: ^2.1.9
-  listr2: ^10.2.2
   markdownlint-cli2: ^0.22.1
   nano-spawn: ^2.1.0
   nypm: ^0.6.7
   oxfmt: ^0.56.0
   pkg-types: ^2.3.1
   publint: ^0.3.21
-  string-width: ^8.0.0
+  react: ^19.2.0
   tinyglobby: ^0.2.0
   typescript: ~6.0.3
   typescript-eslint: ^8.62.0

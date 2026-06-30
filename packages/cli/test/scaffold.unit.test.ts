@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { configFiles, devDependencies, gateScripts } from '../src/commands/scaffold.js'
+import { configFiles, devDependencies, gateScripts, pendingDependencies } from '../src/commands/scaffold.js'
 
 describe('configFiles', () => {
   it('returns the panel, the adapters and the knip config at strict — no cspell', () => {
@@ -56,5 +56,17 @@ describe('devDependencies', () => {
 
   it('adds a layer package per used layer, plus cspell at hardcore', () => {
     expect(devDependencies('hardcore', ['next', 'react'])).toEqual(['@misaon/quality-gateway', 'eslint', 'knip', 'oxfmt', 'typescript', '@misaon/eslint-config-next', '@misaon/eslint-config-react', 'cspell'])
+  })
+})
+
+describe('pendingDependencies', () => {
+  it('keeps only the packages not already in dependencies or devDependencies', () => {
+    const manifest = { dependencies: { eslint: '^10' }, devDependencies: { knip: '^6' } }
+
+    expect(pendingDependencies(['eslint', 'knip', 'oxfmt', 'typescript'], manifest)).toEqual(['oxfmt', 'typescript'])
+  })
+
+  it('returns every package when the manifest declares none', () => {
+    expect(pendingDependencies(['eslint', 'oxfmt'], {})).toEqual(['eslint', 'oxfmt'])
   })
 })

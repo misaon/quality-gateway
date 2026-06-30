@@ -10,6 +10,8 @@
     "consola",
     "dogfood",
     "dogfoods",
+    "figlet",
+    "inkjs",
     "knip",
     "lefthook",
     "lintable",
@@ -27,7 +29,8 @@
     "unparseable",
     "unpkg",
     "unran",
-    "vitest"
+    "vitest",
+    "wordmark"
   ],
   "useGitignore": true,
   "ignorePaths": ["pnpm-lock.yaml", "**/CHANGELOG.md", "CODE_OF_CONDUCT.md"]
