@@ -1,6 +1,6 @@
 {
   "name": "@misaon/eslint-config-next",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "ESLint flat config for Next.js. Extends @misaon/eslint-config-react with @next/eslint-plugin-next.",
   "keywords": [
     "eslint",

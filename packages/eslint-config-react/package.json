@@ -1,6 +1,6 @@
 {
   "name": "@misaon/eslint-config-react",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "ESLint flat config for React. Extends @misaon/eslint-config-common. Base for @misaon/eslint-config-next.",
   "keywords": [
     "eslint",
