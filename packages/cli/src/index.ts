@@ -1,10 +1,6 @@
 #!/usr/bin/env node
-import process from 'node:process'
-import { run } from './cli.js'
+import { runMain } from 'citty'
 
-try {
-  process.exitCode = await run(process.argv.slice(2))
-} catch (error: unknown) {
-  console.error(error)
-  process.exitCode = 1
-}
+import { main } from './cli.js'
+
+await runMain(main)

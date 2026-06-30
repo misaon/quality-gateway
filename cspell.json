@@ -3,23 +3,32 @@
   "version": "0.2",
   "words": [
     "arethetypeswrong",
+    "borderless",
+    "citty",
     "commitlint",
+    "confbox",
+    "consola",
+    "dogfood",
+    "dogfoods",
     "knip",
     "lefthook",
+    "lintable",
+    "listr",
     "misaon",
     "Misák",
+    "nextjs",
+    "nypm",
     "Ondřej",
     "oxfmt",
+    "Oxfmtrc",
     "publint",
+    "sonarjs",
+    "tinyglobby",
+    "unparseable",
+    "unpkg",
+    "unran",
     "vitest"
   ],
-  "ignorePaths": [
-    "**/node_modules/**",
-    "**/dist/**",
-    "**/coverage/**",
-    "**/.stryker-tmp/**",
-    "pnpm-lock.yaml",
-    "**/CHANGELOG.md",
-    "CODE_OF_CONDUCT.md"
-  ]
+  "useGitignore": true,
+  "ignorePaths": ["pnpm-lock.yaml", "**/CHANGELOG.md", "CODE_OF_CONDUCT.md"]
 }

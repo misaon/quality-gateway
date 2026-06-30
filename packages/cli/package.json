@@ -29,18 +29,78 @@
     "dist"
   ],
   "type": "module",
+  "exports": {
+    "./config": {
+      "types": "./dist/config.d.ts",
+      "default": "./dist/config.js"
+    },
+    "./eslint": {
+      "types": "./dist/eslint.d.ts",
+      "default": "./dist/eslint.js"
+    },
+    "./oxfmt": {
+      "types": "./dist/oxfmt.d.ts",
+      "default": "./dist/oxfmt.js"
+    }
+  },
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "dev": "tsc -p tsconfig.json --watch",
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist *.tsbuildinfo",
     "lint:publish": "publint"
   },
+  "dependencies": {
+    "@clack/prompts": "catalog:",
+    "@misaon/eslint-config-common": "workspace:*",
+    "c12": "catalog:",
+    "citty": "catalog:",
+    "cli-table3": "catalog:",
+    "cli-truncate": "catalog:",
+    "confbox": "catalog:",
+    "consola": "catalog:",
+    "listr2": "catalog:",
+    "nano-spawn": "catalog:",
+    "nypm": "catalog:",
+    "pkg-types": "catalog:",
+    "string-width": "catalog:",
+    "tinyglobby": "catalog:"
+  },
   "devDependencies": {
-    "@types/node": "catalog:"
+    "@misaon/eslint-config-next": "workspace:*",
+    "@misaon/eslint-config-node": "workspace:*",
+    "@misaon/eslint-config-react": "workspace:*",
+    "@types/node": "catalog:",
+    "oxfmt": "catalog:",
+    "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "@misaon/eslint-config-next": "workspace:*",
+    "@misaon/eslint-config-node": "workspace:*",
+    "@misaon/eslint-config-react": "workspace:*",
+    "eslint": ">=10",
+    "oxfmt": ">=0.56",
+    "typescript": ">=5"
+  },
+  "peerDependenciesMeta": {
+    "@misaon/eslint-config-next": {
+      "optional": true
+    },
+    "@misaon/eslint-config-node": {
+      "optional": true
+    },
+    "@misaon/eslint-config-react": {
+      "optional": true
+    },
+    "oxfmt": {
+      "optional": true
+    },
+    "typescript": {
+      "optional": true
+    }
   },
   "engines": {
     "node": ">=22"

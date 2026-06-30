@@ -9,11 +9,12 @@
   "scripts": {
     "build": "pnpm --filter \"./packages/*\" run build",
     "dev": "pnpm --filter \"./packages/*\" --parallel run dev",
-    "typecheck": "pnpm --filter \"./packages/*\" run typecheck",
+    "typecheck": "pnpm --filter \"./packages/*\" run typecheck && tsc -p tsconfig.json",
     "clean": "pnpm --filter \"./packages/*\" run clean",
     "lint": "eslint .",
-    "format": "oxfmt",
-    "format:check": "oxfmt --check",
+    "lint:fix": "eslint . --fix",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check .",
     "spell": "cspell --no-progress \"**/*.{ts,js,mjs,json,json5,md,yml,yaml}\"",
     "lint:md": "markdownlint-cli2",
     "knip": "knip",
@@ -28,7 +29,7 @@
     "@arethetypeswrong/cli": "catalog:",
     "@commitlint/cli": "catalog:",
     "@commitlint/config-conventional": "catalog:",
-    "@misaon/eslint-config-common": "workspace:*",
+    "@misaon/quality-gateway": "workspace:*",
     "@stryker-mutator/core": "catalog:",
     "@stryker-mutator/vitest-runner": "catalog:",
     "@types/node": "catalog:",
@@ -41,7 +42,6 @@
     "oxfmt": "catalog:",
     "publint": "catalog:",
     "typescript": "catalog:",
-    "typescript-eslint": "catalog:",
     "vitest": "catalog:"
   },
   "engines": {

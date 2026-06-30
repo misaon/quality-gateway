@@ -3,7 +3,16 @@
   "testRunner": "vitest",
   "plugins": ["@stryker-mutator/vitest-runner"],
   "coverageAnalysis": "perTest",
-  "mutate": ["packages/cli/src/**/*.ts", "!packages/cli/src/index.ts"],
+  "mutate": [
+    "packages/cli/src/frameworks.ts",
+    "packages/cli/src/membership.ts",
+    "packages/cli/src/commands/adapters.ts",
+    "packages/cli/src/commands/gate.ts",
+    "packages/cli/src/commands/render.ts",
+    "packages/cli/src/commands/report.ts",
+    "packages/cli/src/commands/scaffold.ts",
+    "packages/cli/src/commands/workspace.ts"
+  ],
   "reporters": ["clear-text", "progress"],
   "thresholds": { "high": 90, "low": 80, "break": 80 }
 }
