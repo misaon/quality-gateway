@@ -1,53 +1,20 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
-import { run } from '../src/cli.js'
+import { describe, expect, it } from 'vitest'
 
-describe('run', () => {
-  afterEach(() => {
-    vi.restoreAllMocks()
+import { main } from '../src/cli.js'
+import { init } from '../src/commands/init.js'
+
+describe('main command', () => {
+  it('is named quality-gateway with an init subcommand', () => {
+    expect(main.meta).toMatchObject({ name: 'quality-gateway' })
+    expect(main.subCommands).toHaveProperty('init')
   })
+})
 
-  it('prints the version and returns 0', async () => {
-    const log = vi.spyOn(console, 'log').mockImplementation(() => {})
-    const code = await run(['--version'])
-    expect(code).toBe(0)
-    expect(log).toHaveBeenCalledWith('0.1.0')
-  })
-
-  it('prints help and returns 0 when no command is given', async () => {
-    const log = vi.spyOn(console, 'log').mockImplementation(() => {})
-    const code = await run([])
-    expect(code).toBe(0)
-    expect(log.mock.calls[0]?.[0]).toContain('Usage')
-  })
-
-  it('prints help and returns 0 with --help', async () => {
-    const log = vi.spyOn(console, 'log').mockImplementation(() => {})
-    const code = await run(['--help'])
-    expect(code).toBe(0)
-    expect(log.mock.calls[0]?.[0]).toContain('Usage')
-  })
-
-  it('runs the init command and returns 0', async () => {
-    const log = vi.spyOn(console, 'log').mockImplementation(() => {})
-    const code = await run(['init'])
-    expect(code).toBe(0)
-    expect(log).toHaveBeenCalledWith('quality-gateway init — not implemented yet.')
-  })
-
-  it('reports an unknown command and returns 1', async () => {
-    const log = vi.spyOn(console, 'log').mockImplementation(() => {})
-    const error = vi.spyOn(console, 'error').mockImplementation(() => {})
-    const code = await run(['bogus-command'])
-    expect(code).toBe(1)
-    expect(error).toHaveBeenCalledWith('Unknown command: bogus-command\n')
-    expect(log).toHaveBeenCalled()
-  })
-
-  it('prefers --help over a given command', async () => {
-    const log = vi.spyOn(console, 'log').mockImplementation(() => {})
-    const code = await run(['init', '--help'])
-    expect(code).toBe(0)
-    expect(log.mock.calls[0]?.[0]).toContain('Usage')
-    expect(log).not.toHaveBeenCalledWith('quality-gateway init — not implemented yet.')
+describe('init command', () => {
+  it('declares its name and description', () => {
+    expect(init.meta).toMatchObject({
+      description: 'Detect your stack and wire up the matching @misaon quality configs',
+      name: 'init',
+    })
   })
 })

@@ -21,6 +21,8 @@
     "noPropertyAccessFromIndexSignature": true,
     "exactOptionalPropertyTypes": true,
     "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "noUncheckedSideEffectImports": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "noEmitOnError": true,

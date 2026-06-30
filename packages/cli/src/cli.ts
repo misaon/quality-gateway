@@ -1,53 +1,15 @@
-import { parseArgs } from 'node:util'
-import { runInit } from './commands/init.js'
+import { defineCommand } from 'citty'
 
-const VERSION = '0.1.0'
+import { check } from './commands/check.js'
+import { fix } from './commands/fix.js'
+import { init } from './commands/init.js'
+import { description, version } from './package-info.js'
 
-const HELP = `quality-gateway — wire @misaon quality configs into your project
-
-Usage:
-  quality-gateway <command> [options]
-  qg <command> [options]
-
-Commands:
-  init            Detect your stack and set up the matching @misaon ESLint config
-
-Options:
-  -h, --help      Show this help
-  -v, --version   Show version
-`
-
-export async function run(args: string[]): Promise<number> {
-  const { values, positionals } = parseArgs({
-    args,
-    allowPositionals: true,
-    options: {
-      help: { type: 'boolean', short: 'h' },
-      version: { type: 'boolean', short: 'v' },
-    },
-  })
-
-  if (values.version === true) {
-    console.log(VERSION)
-    return 0
-  }
-
-  const command = positionals[0]
-
-  if (command === undefined || values.help === true) {
-    console.log(HELP)
-    return 0
-  }
-
-  switch (command) {
-    case 'init': {
-      await runInit()
-      return 0
-    }
-    default: {
-      console.error(`Unknown command: ${command}\n`)
-      console.log(HELP)
-      return 1
-    }
-  }
-}
+export const main = defineCommand({
+  meta: {
+    description,
+    name: 'quality-gateway',
+    version,
+  },
+  subCommands: { check, fix, init },
+})

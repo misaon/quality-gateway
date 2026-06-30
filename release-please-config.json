@@ -26,6 +26,12 @@
     "packages/eslint-config-common": {
       "package-name": "@misaon/eslint-config-common"
     },
+    "packages/eslint-config-next": {
+      "package-name": "@misaon/eslint-config-next"
+    },
+    "packages/eslint-config-node": {
+      "package-name": "@misaon/eslint-config-node"
+    },
     "packages/eslint-config-react": {
       "package-name": "@misaon/eslint-config-react"
     },
