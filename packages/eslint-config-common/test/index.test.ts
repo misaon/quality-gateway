@@ -1,21 +1,25 @@
+import recommended, { strict } from '@misaon/eslint-config-common'
 import { ESLint } from 'eslint'
 import { describe, expect, it } from 'vitest'
-import common from '@misaon/eslint-config-common'
+
+const levels = [
+  ['recommended', recommended],
+  ['strict', strict],
+] as const
 
 describe('@misaon/eslint-config-common', () => {
-  it('exports a non-empty flat-config array', () => {
-    expect(Array.isArray(common)).toBe(true)
-    expect(common.length).toBeGreaterThan(0)
+  it.each(levels)('%s is a non-empty flat-config array', (_name, config) => {
+    expect(Array.isArray(config)).toBe(true)
+    expect(config.length).toBeGreaterThan(0)
   })
 
-  it('is accepted by ESLint as a flat config', async () => {
-    const eslint = new ESLint({
-      overrideConfigFile: true,
-      overrideConfig: common,
-    })
-    const results = await eslint.lintText('const x = 1\n', {
-      filePath: 'example.js',
-    })
+  it.each(levels)('%s is accepted by ESLint as a flat config', async (_name, config) => {
+    const eslint = new ESLint({ overrideConfig: config, overrideConfigFile: true })
+    const results = await eslint.lintText('const x = 1\n', { filePath: 'example.js' })
     expect(results).toHaveLength(1)
+  })
+
+  it('recommended currently inherits strict unchanged', () => {
+    expect(recommended).toBe(strict)
   })
 })
